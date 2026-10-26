@@ -1,0 +1,12 @@
+# Firmware secrets
+firmware/include/secrets.h
+.pio/
+.vscode/
+
+# Backend envs
+backend/.env
+.env
+
+# Python cache
+__pycache__/
+*.pyc

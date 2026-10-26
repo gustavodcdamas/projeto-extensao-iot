@@ -1,0 +1,34 @@
+services:
+  m5stick_consumer:
+    image: gustavodcdamas/m5stick-consumer:latest
+    env_file: .env
+    networks:
+      - net_publica
+      - net_privada
+    logging:
+      driver: json-file
+      options:
+        max-size: 50m
+    deploy:
+      labels:
+        - "com.docker.stack.namespace=m5stick_consumer"
+        - "crowdsec.enable=false"
+        - "crowdsec.labels.type=m5stick_consumer"
+      mode: replicated
+      replicas: 1
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 512M
+      restart_policy:
+        condition: on-failure
+
+networks:
+  net_publica:
+    driver: overlay
+    attachable: false
+    external: true
+  net_privada:
+    driver: overlay
+    attachable: false
+    external: true

@@ -1,0 +1,39 @@
+services:
+  mosquitto:
+    image: eclipse-mosquitto:latest
+    ports:
+      - "1883:1883"
+    volumes:
+      - /mnt/gluster/shared_data/mosquitto/:/mosquitto/config/
+    command: mosquitto -c /mosquitto/config/mosquitto.conf
+    env_file: .env
+    networks:
+      - net_publica
+      - net_privada
+    logging:
+      driver: json-file
+      options:
+        max-size: 50m
+    deploy:
+      labels:
+        - "com.docker.stack.namespace=mosquitto"
+        - "crowdsec.enable=false"
+        - "crowdsec.labels.type=mosquitto"
+      mode: replicated
+      replicas: 1
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 512M
+      restart_policy:
+        condition: on-failure
+
+networks:
+  net_publica:
+    driver: overlay
+    attachable: false
+    external: true
+  net_privada:
+    driver: overlay
+    attachable: false
+    external: true

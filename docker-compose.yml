@@ -1,0 +1,16 @@
+services:
+  m5stick_consumer:
+    build: ./backend
+    image: gustavodcdamas/m5stick-consumer:latest
+    container_name: m5stick_consumer
+    restart: always
+    env_file:
+      - .env
+
+  eclipse-mosquitto:
+    container_name: mosquitto
+    restart: always
+    ports:
+      - 1883:1883
+      - 9001:9001
+    image: eclipse-mosquitto
